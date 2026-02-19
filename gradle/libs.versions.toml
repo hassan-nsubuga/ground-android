@@ -29,7 +29,6 @@ espressoContribVersion = "3.7.0"
 firebaseBomVersion = "34.9.0"
 firebaseCrashlyticsGradleVersion = "3.0.6"
 fragmentVersion = "1.8.9"
-glideVersion = "5.0.5"
 googleServicesVersion = "4.4.4"
 gradleVersion = "9.0.1"
 groundPlatformVersion = "bc2596d"
@@ -129,7 +128,6 @@ firebase-messaging-directboot = { module = "com.google.firebase:firebase-messagi
 firebase-storage = { module = "com.google.firebase:firebase-storage" }
 firebase-perf = { module = "com.google.firebase:firebase-perf" }
 firebase-functions = { module = "com.google.firebase:firebase-functions" }
-glide = { module = "com.github.bumptech.glide:glide", version.ref = "glideVersion" }
 google-services = { module = "com.google.gms:google-services", version.ref = "googleServicesVersion" }
 gradle = { module = "com.android.tools.build:gradle", version.ref = "gradleVersion" }
 ground-platform = { module = "com.github.google:ground-platform", version.ref = "groundPlatformVersion" }
