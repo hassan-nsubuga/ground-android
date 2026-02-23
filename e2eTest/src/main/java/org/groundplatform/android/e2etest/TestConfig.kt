@@ -33,7 +33,11 @@ object TestConfig {
       TestTask(taskType = Task.Type.DROP_PIN, isRequired = true),
       TestTask(Task.Type.INSTRUCTIONS),
       TestTask(Task.Type.TEXT),
-      TestTask(taskType = Task.Type.MULTIPLE_CHOICE, selectIndexes = listOf(1), isACondition = true),
+      TestTask(
+        taskType = Task.Type.MULTIPLE_CHOICE,
+        selectIndexes = listOf(1),
+        isACondition = true,
+      ),
       TestTask(taskType = Task.Type.MULTIPLE_CHOICE, selectIndexes = (0..3).toList()),
       TestTask(Task.Type.NUMBER),
       TestTask(Task.Type.PHOTO),
