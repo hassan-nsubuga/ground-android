@@ -41,7 +41,7 @@ class DataCollectionRobot(override val testDriver: TestDriver) : Robot<DataColle
             "Something is wrong with the tasks defined in the Firebase emulator"
           )
         Task.Type.TEXT -> textTask()
-        Task.Type.MULTIPLE_CHOICE -> multipleChoiceTask(task.selectIndexes!!)
+        Task.Type.MULTIPLE_CHOICE -> multipleChoiceTask(task.selectIndexes!!, task.isACondition)
         Task.Type.PHOTO -> cameraTask()
         Task.Type.NUMBER -> numberTask()
         Task.Type.DATE -> dateTask()
@@ -109,11 +109,12 @@ class DataCollectionRobot(override val testDriver: TestDriver) : Robot<DataColle
     testDriver.click(TestDriver.Target.Text(testDriver.getStringResource(R.string.save)))
   }
 
-  private fun multipleChoiceTask(selectIndexes: List<Int>) {
+  private fun multipleChoiceTask(selectIndexes: List<Int>, conditional: Boolean = false) {
     if (selectIndexes.size == 1) {
       testDriver.selectFromList(
         TestDriver.Target.TestTag(SELECT_MULTIPLE_RADIO_TEST_TAG),
         selectIndexes[0],
+        conditional,
       )
     } else {
       selectIndexes.forEach {

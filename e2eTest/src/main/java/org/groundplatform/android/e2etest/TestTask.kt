@@ -21,4 +21,5 @@ data class TestTask(
   val taskType: Task.Type,
   val isRequired: Boolean = false,
   val selectIndexes: List<Int>? = null,
+  val isACondition: Boolean = false,
 )

@@ -29,6 +29,7 @@ import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isEnabled
 import androidx.compose.ui.test.junit4.AndroidComposeTestRule
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
@@ -43,10 +44,16 @@ import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.Until
 import org.groundplatform.android.R
 import org.groundplatform.android.e2etest.TestConfig.DEFAULT_TIMEOUT
+import org.groundplatform.android.e2etest.TestConfig.ARABICA_TEXT
+import org.groundplatform.android.e2etest.TestConfig.COFFEE_TEXT
+import org.groundplatform.android.e2etest.TestConfig.COVER_CROPPING_TEXT
+import org.groundplatform.android.e2etest.TestConfig.NEXT_BUTTON_TEXT
+import org.groundplatform.android.e2etest.TestConfig.PREVIOUS_BUTTON_TEXT
 import org.groundplatform.android.e2etest.TestConfig.TEST_PHOTO_FILE
 import org.groundplatform.android.e2etest.extensions.onTarget
 import org.groundplatform.android.ui.datacollection.tasks.date.DATE_TEXT_TEST_TAG
 import org.groundplatform.android.ui.datacollection.tasks.time.TIME_TEXT_TEST_TAG
+import org.groundplatform.android.ui.datacollection.tasks.multiplechoice.SELECT_MULTIPLE_RADIO_TEST_TAG
 
 @OptIn(ExperimentalTestApi::class)
 class AndroidTestDriver(
@@ -88,7 +95,7 @@ class AndroidTestDriver(
     }
   }
 
-  override fun selectFromList(target: TestDriver.Target, index: Int) {
+  override fun selectFromList(target: TestDriver.Target, index: Int, isACondition: Boolean) {
     wait(target)
     if (target is TestDriver.Target.ViewId) {
       val resName = composeRule.activity.resources.getResourceEntryName(target.resId)
@@ -96,7 +103,20 @@ class AndroidTestDriver(
       val parent = device.findObject(By.res(packageName, resName))
       parent.children[index].click()
     } else {
-      composeRule.onTarget(target, index).performClick()
+      if (target is TestDriver.Target.TestTag && target.tag == SELECT_MULTIPLE_RADIO_TEST_TAG && isACondition) {
+          composeRule.onNodeWithText(ARABICA_TEXT).assertDoesNotExist()
+          composeRule.onNodeWithText(COFFEE_TEXT).performClick()
+          composeRule.onNodeWithText(NEXT_BUTTON_TEXT).assertExists().performClick()
+          composeRule.onNodeWithText(ARABICA_TEXT).assertExists().performClick()
+          composeRule.onNodeWithText(PREVIOUS_BUTTON_TEXT).assertExists().performClick()
+          composeRule.onTarget(target, index).performClick()
+          composeRule.onNodeWithText(NEXT_BUTTON_TEXT).assertExists().performClick()
+          composeRule.onNodeWithText(ARABICA_TEXT).assertDoesNotExist()
+          composeRule.onNodeWithText(COVER_CROPPING_TEXT).assertExists().performClick()
+          composeRule.onNodeWithText(PREVIOUS_BUTTON_TEXT).assertExists().performClick()
+      } else {
+        composeRule.onTarget(target, index).performClick()
+      }
     }
   }
 

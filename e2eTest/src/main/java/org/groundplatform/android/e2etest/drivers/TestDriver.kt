@@ -18,7 +18,7 @@ package org.groundplatform.android.e2etest.drivers
 interface TestDriver {
   fun click(target: Target)
 
-  fun selectFromList(target: Target, index: Int)
+  fun selectFromList(target: Target, index: Int, isACondition: Boolean = false)
 
   fun dragMapBy(offsetX: Int, offsetY: Int)
 

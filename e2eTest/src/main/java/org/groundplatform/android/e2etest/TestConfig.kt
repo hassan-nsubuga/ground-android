@@ -33,7 +33,7 @@ object TestConfig {
       TestTask(taskType = Task.Type.DROP_PIN, isRequired = true),
       TestTask(Task.Type.INSTRUCTIONS),
       TestTask(Task.Type.TEXT),
-      TestTask(taskType = Task.Type.MULTIPLE_CHOICE, selectIndexes = listOf(1)),
+      TestTask(taskType = Task.Type.MULTIPLE_CHOICE, selectIndexes = listOf(1), isACondition = true),
       TestTask(taskType = Task.Type.MULTIPLE_CHOICE, selectIndexes = (0..3).toList()),
       TestTask(Task.Type.NUMBER),
       TestTask(Task.Type.PHOTO),
@@ -45,4 +45,9 @@ object TestConfig {
   val TEST_LIST_DRAW_AREA = listOf(TestTask(taskType = Task.Type.DRAW_AREA, isRequired = true))
   const val LOI_NAME = "Test location"
   const val TEST_PHOTO_FILE = "e2e_test_photo.webp"
+  const val ARABICA_TEXT = "Arabica"
+  const val COFFEE_TEXT = "Coffee"
+  const val NEXT_BUTTON_TEXT = "Next"
+  const val PREVIOUS_BUTTON_TEXT = "Previous"
+  const val COVER_CROPPING_TEXT = "Cover Cropping"
 }
