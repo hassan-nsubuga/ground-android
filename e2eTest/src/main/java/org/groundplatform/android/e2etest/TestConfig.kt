@@ -54,4 +54,5 @@ object TestConfig {
   const val NEXT_BUTTON_TEXT = "Next"
   const val PREVIOUS_BUTTON_TEXT = "Previous"
   const val COVER_CROPPING_TEXT = "Cover Cropping"
+  const val PALM_TEXT = "Palm"
 }

@@ -16,7 +16,13 @@
 package org.groundplatform.android.e2etest.robots
 
 import org.groundplatform.android.R
+import org.groundplatform.android.e2etest.TestConfig.ARABICA_TEXT
+import org.groundplatform.android.e2etest.TestConfig.COFFEE_TEXT
+import org.groundplatform.android.e2etest.TestConfig.COVER_CROPPING_TEXT
 import org.groundplatform.android.e2etest.TestConfig.LOI_NAME
+import org.groundplatform.android.e2etest.TestConfig.NEXT_BUTTON_TEXT
+import org.groundplatform.android.e2etest.TestConfig.PALM_TEXT
+import org.groundplatform.android.e2etest.TestConfig.PREVIOUS_BUTTON_TEXT
 import org.groundplatform.android.e2etest.TestTask
 import org.groundplatform.android.e2etest.drivers.TestDriver
 import org.groundplatform.android.model.task.Task
@@ -109,18 +115,26 @@ class DataCollectionRobot(override val testDriver: TestDriver) : Robot<DataColle
     testDriver.click(TestDriver.Target.Text(testDriver.getStringResource(R.string.save)))
   }
 
-  private fun multipleChoiceTask(selectIndexes: List<Int>, conditional: Boolean = false) {
-    if (selectIndexes.size == 1) {
-      testDriver.selectFromList(
-        TestDriver.Target.TestTag(SELECT_MULTIPLE_RADIO_TEST_TAG),
-        selectIndexes[0],
-        conditional,
-      )
-    } else {
-      selectIndexes.forEach {
-        testDriver.selectFromList(TestDriver.Target.TestTag(SELECT_MULTIPLE_CHECKBOX_TEST_TAG), it)
+  private fun multipleChoiceTask(selectIndexes: List<Int>, isConditional: Boolean = false) {
+    when (selectIndexes.size) {
+      1 if isConditional -> {
+        conditionalTask(TestDriver.Target.TestTag(SELECT_MULTIPLE_RADIO_TEST_TAG))
       }
-      testDriver.insertText("Other", TestDriver.Target.TestTag(OTHER_INPUT_TEXT_TEST_TAG))
+      1 -> {
+        testDriver.selectFromList(
+          TestDriver.Target.TestTag(SELECT_MULTIPLE_RADIO_TEST_TAG),
+          selectIndexes[0],
+        )
+      }
+      else -> {
+        selectIndexes.forEach {
+          testDriver.selectFromList(
+            TestDriver.Target.TestTag(SELECT_MULTIPLE_CHECKBOX_TEST_TAG),
+            it,
+          )
+        }
+        testDriver.insertText("Other", TestDriver.Target.TestTag(OTHER_INPUT_TEXT_TEST_TAG))
+      }
     }
   }
 
@@ -138,5 +152,21 @@ class DataCollectionRobot(override val testDriver: TestDriver) : Robot<DataColle
 
   private fun captureLocationTask() {
     testDriver.click(TestDriver.Target.Text(testDriver.getStringResource(R.string.capture)))
+  }
+
+  private fun conditionalTask(target: TestDriver.Target) {
+    if (target is TestDriver.Target.TestTag && target.tag == SELECT_MULTIPLE_RADIO_TEST_TAG) {
+
+      testDriver.assertVisible(ARABICA_TEXT)
+      testDriver.click(TestDriver.Target.Text(COFFEE_TEXT))
+      testDriver.click(TestDriver.Target.Text(NEXT_BUTTON_TEXT))
+      testDriver.assertVisible(ARABICA_TEXT, true)
+      testDriver.click(TestDriver.Target.Text(PREVIOUS_BUTTON_TEXT))
+      testDriver.click(TestDriver.Target.Text(PALM_TEXT))
+      testDriver.click(TestDriver.Target.Text(NEXT_BUTTON_TEXT))
+      testDriver.assertVisible(ARABICA_TEXT, false)
+      testDriver.click(TestDriver.Target.Text(COVER_CROPPING_TEXT))
+      testDriver.click(TestDriver.Target.Text(PREVIOUS_BUTTON_TEXT))
+    }
   }
 }
